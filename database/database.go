@@ -5,7 +5,7 @@ import (
 	"context"
 
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/x/mongo/driver/mongocrypt/options"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func ConnectDB(conf config.MongoConfiguration) *mongo.Database {

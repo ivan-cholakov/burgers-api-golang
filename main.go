@@ -1,10 +1,11 @@
 package main
 
 import (
-	"burgers-api/config"
-	"burgers-api/database"
 	"fmt"
 	"net/http"
+
+	"burgers-api/config"
+	"burgers-api/database"
 
 	"github.com/gorilla/mux"
 )
