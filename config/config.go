@@ -16,9 +16,9 @@ type MongoConfiguration struct {
 func GetConfig() Configuration {
 	conf := Configuration{}
 
-	viper.SetConfigName(("config"))
+	viper.SetConfigName("config")
 	viper.SetConfigType("yml")
-	viper.AddConfigPath(("./config"))
+	viper.AddConfigPath("./config")
 
 	err := viper.ReadInConfig()
 	if err != nil {
