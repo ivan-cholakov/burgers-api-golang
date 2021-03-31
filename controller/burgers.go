@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -14,10 +15,23 @@ import (
 func FetchBurgers(service service.BurgerServiceInterface) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		res, err := service.Fetch()
-		if err != nil {
-			WriteResponse(w, http.StatusBadRequest, err.Error())
-			return
+		vals := r.URL.Query()                 // Returns a url.Values, which is a map[string][]string
+		burgerName, ok := vals["burger_name"] // Note type, not ID. ID wasn't specified anywhere.
+		var pt string
+		var res interface{}
+		var err error
+		if ok {
+			if len(burgerName) >= 1 {
+				pt = burgerName[0] // The first `?type=model`
+				res, err = service.GetBurgerByName(pt)
+			}
+		} else {
+
+			res, err = service.Fetch()
+			if err != nil {
+				WriteResponse(w, http.StatusBadRequest, err.Error())
+				return
+			}
 		}
 
 		WriteResponse(w, http.StatusOK, res)
@@ -28,9 +42,16 @@ func FetchBurgers(service service.BurgerServiceInterface) http.HandlerFunc {
 func GetBurger(service service.BurgerServiceInterface) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		params := mux.Vars(r)
-		name := params["name"]
+		var res entity.Burger
+		var err error
+		if params["id"] == "random" {
+			res, err = service.GetRandomBurger()
+		} else {
+			id := params["id"]
+			fmt.Println(params)
+			res, err = service.GetBurger(id)
+		}
 
-		res, err := service.GetBurger(name)
 		if err != nil {
 			WriteResponse(w, http.StatusBadRequest, err.Error())
 			return

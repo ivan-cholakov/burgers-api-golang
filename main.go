@@ -29,7 +29,6 @@ func main() {
 	s.HandleFunc("/burgers", controller.CreateBurger(client)).Methods("POST")
 	s.HandleFunc("/burgers", controller.FetchBurgers(client)).Methods("GET")
 	s.HandleFunc("/burgers/{id}", controller.GetBurger(client)).Methods("GET")
-	s.HandleFunc("/burgers/random", controller.GetRandomBurger((client))).Methods("GET")
 
 	http.ListenAndServe(":3000", r)
 }
