@@ -3,7 +3,6 @@ package service
 import (
 	"burgers-api/entity"
 	"context"
-	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -81,24 +80,16 @@ func (c *BurgerClient) GetBurgerByName(name string) ([]entity.Burger, error) {
 }
 
 func (c *BurgerClient) GetRandomBurger() (entity.Burger, error) {
-	fmt.Println("in random")
 	burger := entity.Burger{}
 
 	pipeline := []bson.D{{{"$sample", bson.D{{"size", 1}}}}}
-	fmt.Println("before aggregate", pipeline)
 	cursor, err := c.Col.Aggregate(c.Ctx, pipeline)
-	fmt.Println("after aggregate", cursor)
 	if err != nil {
 		return burger, err
 	}
-	fmt.Println("before decode")
-	err = cursor.Decode(&burger)
-	fmt.Println("after decode")
-	if err != nil {
-		return burger, err
+	for cursor.Next(c.Ctx) {
+		err = cursor.Decode(&burger)
 	}
-
-	fmt.Println(&burger)
 
 	return burger, nil
 }
