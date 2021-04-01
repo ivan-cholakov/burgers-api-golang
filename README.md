@@ -30,3 +30,12 @@ A burger object should look like this:
 
 ### Persistence
 Data is persisted inside a MongoDb collection
+
+### How to run the project
+```code
+  docker-compose up
+```
+or
+```code
+  go run main.go
+```
