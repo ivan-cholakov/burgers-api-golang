@@ -15,14 +15,14 @@ import (
 func FetchBurgers(service service.BurgerServiceInterface) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		vals := r.URL.Query()                 // Returns a url.Values, which is a map[string][]string
-		burgerName, ok := vals["burger_name"] // Note type, not ID. ID wasn't specified anywhere.
+		vals := r.URL.Query()                 
+		burgerName, ok := vals["burger_name"] 
 		var pt string
 		var res interface{}
 		var err error
 		if ok {
 			if len(burgerName) >= 1 {
-				pt = burgerName[0] // The first `?type=model`
+				pt = burgerName[0] 
 				res, err = service.GetBurgerByName(pt)
 			}
 		} else {
